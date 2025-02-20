@@ -482,5 +482,8 @@ class CustomerAutomation:
             number=row_data["Mobile"]
             
             datas = name,number
+            print(datas)
             return datas
+
+
 
