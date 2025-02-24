@@ -103,7 +103,7 @@ class CustomerAutomation:
             Update_master = ExcelUtils.update_master_status(FILE_PATH,Status,function_name)    
         except Exception as e:
                 print(f"Error during login: {e}")  
-                 
+                
     def customeradd_data(self,row_data):
         sleep(5)
         self.driver.find_element(By.ID,'add_customer').click()
@@ -124,7 +124,7 @@ class CustomerAutomation:
             if row_data["First Name"] != None:
                 self.driver.find_element(By.ID, "firstname").send_keys(row_data["First Name"])
             else:  
-                self.driver.get_screenshot_as_file("D:\\CRM\\Taneira\\screeshot\\First_name_fail.png") 
+                ExcelUtils.screenshot(row_data["First Name"])
                 return 'Fail','First Name Should be Mandatory'
             self.driver.find_element(By.ID, "lastname").send_keys(row_data["Last Name"])
         elif Customer_Type == "Company":
@@ -384,6 +384,7 @@ class CustomerAutomation:
         status = search_test_status,search_data,search_status,Customer_id
         print(status)
         return status
+    
     def edit_customer(self,row_data,Customer_id):
         try:
         # Check if Customer_id is empty

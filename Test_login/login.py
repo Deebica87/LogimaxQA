@@ -2,10 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 from Utils.Excel import ExcelUtils
+from Test_Image.screenshot import image
 from openpyxl import load_workbook
 import allure
-import random
-from PIL import ImageGrab
+
 
 FILE_PATH = ExcelUtils.file_path
 class LoginAutomation:
@@ -42,7 +42,7 @@ class LoginAutomation:
                 login_button.click()
                 # path = "D:\CRM\Taneira\screeshot\login"+str(random.random())+".jpg"
                 # self.driver.save_screenshot(path)
-                ExcelUtils.screenshot(function_name)
+                
                 sleep(5)
                 match Expected_status:
                         case "valid Credentials":                            
@@ -50,6 +50,8 @@ class LoginAutomation:
                                 test_status = "Pass"
                                 Actual_status = "Login successful"
                             else:
+                                path = image.screenshot(function_name)
+                                self.driver.get_screenshot_as_file(path)
                                 test_status = "Fail"
                                 Actual_status = "Login unsuccessful"
                         case "Invalid Credentials":
@@ -57,6 +59,8 @@ class LoginAutomation:
                                 test_status = "Fail"
                                 Actual_status = "Login successful"
                             else:    
+                                path = image.screenshot(function_name)
+                                self.driver.get_screenshot_as_file(path)
                                 test_status = "Pass"
                                 Actual_status = "Login Unsuccessful" 
                 sheet.cell(row=row_num, column=2).value = test_status  # Write Test Status
@@ -70,6 +74,8 @@ class LoginAutomation:
                             self.driver.find_element(By.PARTIAL_LINK_TEXT, "Lmxsupport").click()
                             self.driver.find_element(By.PARTIAL_LINK_TEXT, "Sign out").click()  
                     except Exception as e:   
+                        path = image.screenshot(function_name)
+                        self.driver.get_screenshot_as_file(path)
                         print (f"Error during login: {e}" )      
             print("Login Funtion Completed")   
             Status = ExcelUtils.get_Status(FILE_PATH,function_name)  
@@ -77,6 +83,8 @@ class LoginAutomation:
             Update_master = ExcelUtils.update_master_status(FILE_PATH,Status,function_name)
                                     
         except Exception as e:
+            path = image.screenshot(function_name)
+            self.driver.get_screenshot_as_file(path)
             print(f"Error during login: {e}" )
             
     def url(self):
@@ -92,5 +100,7 @@ class LoginAutomation:
                 url = sheet.cell(row=row_num, column=5).value
                 return url                       
         except Exception as e:
+            path = image.screenshot(function_name)
+            self.driver.get_screenshot_as_file(path)
             print(f"Error during login: {e}" )
     

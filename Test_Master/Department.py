@@ -71,6 +71,7 @@ class DepartmentAutomation:
                 Dept_test_status = "Pass"
                 Dept_status = "Department Add successful"
             else:
+                
                 Dept_test_status = "Fail"    
                 Dept_status = "Department Add Unsuccessful" 
                 self.driver.get_screenshot_as_file('E:\\CRM\\Test\\Screenshots\\dept.png')    

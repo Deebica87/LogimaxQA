@@ -2,10 +2,6 @@ import pandas as pd
 import re
 import win32com.client
 from openpyxl import load_workbook
-from PIL import ImageGrab
-import random
-import driver
-
 
 
 class ExcelUtils:
@@ -102,12 +98,7 @@ class ExcelUtils:
                 workbook.save(file_path)
                 break
             i=i+1 
-            
-    #Get screenshot
-    def screenshot(function_name):
-        path = f"D:\\CRM\\Taneira\\screeshot\\{function_name}_{random.random():.4f}.png"
-        driver.save_screenshot(path)
-        print(path)
+
         
                  
                 
