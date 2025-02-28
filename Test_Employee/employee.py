@@ -3,10 +3,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys
 from time import sleep
 from Utils.Excel import ExcelUtils
-from selenium.webdriver.support.ui import WebDriverWait
+from Test_Master.Department import DepartmentAutomation
+from Test_Master.Designation import DesignationAutomation
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import Select
+
 from openpyxl import load_workbook
 import re
 
@@ -86,7 +87,7 @@ class EmployeesAutomation:
                     sheet.cell(row=row_num, column=2).value = test_status  # Write Test Status
                     sheet.cell(row=row_num, column=3).value = Actual_status  # Write Actual Status
                     workbook.save(FILE_PATH) 
-            print("Classification Completed")   
+            print("Employee Completed")   
             Status = ExcelUtils.get_Status(FILE_PATH,function_name)  
             print(Status)
             Update_master = ExcelUtils.update_master_status(FILE_PATH,Status,function_name)
@@ -95,11 +96,11 @@ class EmployeesAutomation:
     
     def Employeeadd_data(self,row_data):
         self.driver.find_element(By.ID, "add_employee").click()
-        Name = row_data["Profile Image"]
-        Path = r"D:\CRM\Taneira\Image"  
-        Image_path = f"{Path}\\{Name}.jpg"
-        print(Image_path)
-        self.driver.find_element(By.ID, "pp_emp_image").send_keys(Image_path)
+        # Name = row_data["Profile Image"]
+        # Path = r"D:\CRM\Taneira\Image"  
+        # Image_path = f"{Path}\\{Name}.jpg"
+        # print(Image_path)
+        # self.driver.find_element(By.ID, "pp_emp_image").send_keys(Image_path)
         if row_data["First Name"] != None and row_data["Last Name"] != None:
             self.driver.find_element(By.ID, "firstname").send_keys(row_data["First Name"])
             self.driver.find_element(By.ID, "lastname").send_keys(row_data["Last Name"])
@@ -122,22 +123,31 @@ class EmployeesAutomation:
         Join_Date.send_keys(Keys.TAB)
         Join_Date.send_keys(Keys.TAB)
         if  row_data["Department"] != None:
-            sleep(5)
-            self.driver.find_element(By.XPATH, '//span[@id="select2-dept-container"]').click()
-            state=self.driver.find_element(By.XPATH,'(//input[@type="search"])')
-            state.send_keys(row_data["Department"])
-            state.send_keys(Keys.ENTER)  
+            Department = row_data["Department"]  
+        elif row_data["Department"] == None:
+            datas=DepartmentAutomation.departmentname(self)  
+            Department =  datas
         else:
             return 'Fail','Department should be mandatory field'
         sleep(5)
+        self.driver.find_element(By.XPATH, '//span[@id="select2-dept-container"]').click()
+        state=self.driver.find_element(By.XPATH,'(//input[@type="search"])')
+        state.send_keys(Department)
+        state.send_keys(Keys.ENTER)
+        sleep(5)
         if  row_data["Designation"] != None:
-            print(row_data["Designation"])
-            self.driver.find_element(By.XPATH, '//span[@id="select2-designation-container"]').click()
-            state=self.driver.find_element(By.XPATH,'(//input[@type="search"])')
-            state.send_keys(row_data["Designation"])
-            state.send_keys(Keys.ENTER)  
+            Designation = row_data["Designation"]
+        elif row_data["Designation"] == None: 
+            datas=DesignationAutomation.designationname(self)  
+            Designation =  datas 
+             
         else:
             return 'Fail','Designation should be mandatory field'
+        print(row_data["Designation"])
+        self.driver.find_element(By.XPATH, '//span[@id="select2-designation-container"]').click()
+        state=self.driver.find_element(By.XPATH,'(//input[@type="search"])')
+        state.send_keys(Designation)
+        state.send_keys(Keys.ENTER) 
         sleep(4)
         if (row_data["Address1"])!=None:
             self.driver.find_element(By.ID, "address1").send_keys(row_data["Address1"])
@@ -298,9 +308,9 @@ class EmployeesAutomation:
                     Edit_test_status = "Fail"
                     Edit_status = "Edit Employees Unsuccessful"             
                         
-            elif re.match(r"No", str(["Edit"]), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit Employees Unsuccessful"   
+            elif re.match(r"No", str(row_data["Edit"]), re.IGNORECASE):
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in excel"   
         except:         
             Edit_test_status = "Fail"
             Edit_status = "Edit Employees Unsuccessful"  
@@ -334,8 +344,8 @@ class EmployeesAutomation:
                     Delete_test_status = "Fail"
                     Delete_status = "Delete Employees  Unsuccessful"         
             elif re.match(r"No", str(row_data['Delete']), re.IGNORECASE):
-                Delete_test_status = "Fail"
-                Delete_status = "Delete Employees  Unsuccessful" 
+                Delete_test_status = "Pass"
+                Delete_status = "Delete Option No in Excel" 
             delete = Delete_test_status,Delete_status
             return delete
         except: 

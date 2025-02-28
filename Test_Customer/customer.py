@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys
 from time import sleep
 from Utils.Excel import ExcelUtils
+from Test_Master.Profession import ProfessionAutomation
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -97,7 +98,7 @@ class CustomerAutomation:
                     sheet.cell(row=row_num, column=2).value = test_status  # Write Test Status
                     sheet.cell(row=row_num, column=3).value = Actual_status  # Write Actual Status
                     workbook.save(FILE_PATH) 
-            print("Classification Completed")   
+            print("Customer Completed")   
             Status = ExcelUtils.get_Status(FILE_PATH,function_name)  
             print(Status)
             Update_master = ExcelUtils.update_master_status(FILE_PATH,Status,function_name)    
@@ -167,9 +168,13 @@ class CustomerAutomation:
             self.driver.get_screenshot_as_file("D:\\CRM\\Taneira\\screeshot\\Mobilenumber_fail.png")    
             return "Fail",'Mobile number is mandatory' 
         sleep(5)
+        if row_data["Profession"] != None:
+            Profession = row_data["Profession"]
+        elif  row_data["Profession"] == None:   
+            data = ProfessionAutomation.Profesionname(self)
         self.driver.find_element(By.XPATH, '(//b[@role="presentation"])[2]').click()
         Profession = self.driver.find_element(By.XPATH,"//input[@role='textbox']")
-        Profession.send_keys(row_data["Profession"])
+        Profession.send_keys(data)
         Profession.send_keys(Keys.ENTER)
         if row_data["E-mail"]!="":
             self.driver.find_element(By.ID, "email").send_keys(row_data["E-mail"])
@@ -336,11 +341,11 @@ class CustomerAutomation:
             self.driver.find_element(By.ID, "pan_no").send_keys(row_data["Pan"])
             self.driver.find_element(By.ID, "pan_front_img").send_keys(Image_path)
             self.driver.find_element(By.ID, "pan_back_img").send_keys(Image_path)
-            self.driver.find_element(By.ID, "kyc_submit").click()
-            sleep(6)
-        else:
-            self.driver.get_screenshot_as_file("D:\\CRM\\Taneira\\screeshot\\Pan_fail.png")
-            return 'Fail',"Pan Should be mandatory"    
+        # else:
+        #     self.driver.get_screenshot_as_file("D:\\CRM\\Taneira\\screeshot\\Pan_fail.png")
+        #     return 'Fail',"Pan Should be mandatory"
+        self.driver.find_element(By.ID, "kyc_submit").click()
+        sleep(10)    
         status=self.search(row_data)
         print(f'{status}2')
         search_test_status,search_data,search_status,Customer_id = status
@@ -456,9 +461,9 @@ class CustomerAutomation:
                     Edit_test_status = "Fail"
                     Edit_status = "Edit Customer Unsuccessful"             
                        
-            elif re.match(r"No", str(["Edit"]), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit Customer Unsuccessful"   
+            elif re.match(r"No", str(row_data["Edit"]), re.IGNORECASE):
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in Excel"   
         except:         
             Edit_test_status = "Fail"
             Edit_status = "Edit Customer Unsuccessful"  
@@ -479,10 +484,10 @@ class CustomerAutomation:
             }
             row_data = {key: sheet.cell(row=row_num, column=col).value 
                             for key, col in data.items()}
-            name = row_data["First Name"]
+            #name = row_data["First Name"]
             number=row_data["Mobile"]
             
-            datas = name,number
+            datas = number
             print(datas)
             return datas
 

@@ -94,6 +94,8 @@ class ClassificationAutomation:
             )
         
     def search(self, row_data):
+        sleep(3)
+        self.driver.switch_to.alert.accept()
         try:
             # Directly access 'classification_Name' from the dictionary
             classification=row_data["Classification_Name"]

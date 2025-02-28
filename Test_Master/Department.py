@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 from Utils.Excel import ExcelUtils
+from Test_Image.screenshot import image
 import re
 from openpyxl import load_workbook
 
@@ -22,7 +23,7 @@ class DepartmentAutomation:
             self.driver.find_element(By.PARTIAL_LINK_TEXT, 'Masters').click()
             sleep(5)
             self.driver.find_element(By.XPATH, '(//span[text()="Department"])').click()
-
+            
             for row_num in range(2,valid_rows):
                 Department = sheet.cell(row=row_num, column=4).value
                 print(Department)
@@ -34,10 +35,10 @@ class DepartmentAutomation:
                 print(Delete)
                 self.driver.refresh()
                 # Call add_department
-                status=self.add_department(Department)
+                status=self.add_department(Department,function_name)
                 Dept_test_status,Dept_status,search_test_status,search_status,Dept_id = status
                 print(status)
-                edit = self.edit_department(Edit_data,Edit,Dept_id)
+                edit = self.edit_department(Edit_data,Edit,Dept_id,)
                 Edit_test_status,Edit_status = edit   
                 print(edit)
                 sleep(3)
@@ -55,8 +56,8 @@ class DepartmentAutomation:
             Update_master = ExcelUtils.update_master_status(FILE_PATH,Status,function_name)     
         except Exception as e:
                 print(f"Error during login: {e}") 
-           
-    def add_department(self,Department):
+
+    def add_department(self,Department,function_name):
         sleep(8)
         self.driver.find_element(By.ID, 'add_dpt').click()   
         sleep(3)
@@ -71,7 +72,8 @@ class DepartmentAutomation:
                 Dept_test_status = "Pass"
                 Dept_status = "Department Add successful"
             else:
-                
+                path = image.screenshot(function_name)
+                self.driver.get_screenshot_as_file(path)
                 Dept_test_status = "Fail"    
                 Dept_status = "Department Add Unsuccessful" 
                 self.driver.get_screenshot_as_file('E:\\CRM\\Test\\Screenshots\\dept.png')    
@@ -96,8 +98,10 @@ class DepartmentAutomation:
             if (search_data==Department):
                 search_test_status = "Pass"    
                 search_status=("search data successfull")
-                
             else:
+                function_name='search'
+                path = image.screenshot(function_name)
+                self.driver.get_screenshot_as_file(path)
                 search_test_status = "Fail"
                 search_status=("search data Unsuccessfull") 
         except:
@@ -109,7 +113,6 @@ class DepartmentAutomation:
 
     def edit_department(self,Edit_data,Edit,Dept_id):
         sleep(3)
-        
         try:
         # Check if Dept_id is empty
             if Dept_id == ' ':
@@ -131,11 +134,14 @@ class DepartmentAutomation:
                         Edit_test_status = "Pass"
                         Edit_status = "Edit department successful"
                 except:
+                    function_name = 'Edit_Dept'
+                    path = image.screenshot(function_name)
+                    self.driver.get_screenshot_as_file(path)
                     Edit_test_status = "Fail"
                     Edit_status = "Edit department Unsuccessful"       
             elif re.match(r"No", str(Edit), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit department Unsuccessful"  
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in Excel sheet"  
         except:         
             Edit_test_status = "Fail"
             Edit_status = "Edit department Unsuccessful"  
@@ -161,11 +167,14 @@ class DepartmentAutomation:
                         Delete_test_status = "Pass"
                         Delete_status = "Delete department successful"
                 except:
+                    function_name = 'del_dept'
+                    path = image.screenshot(function_name)
+                    self.driver.get_screenshot_as_file(path)
                     Delete_test_status = "Fail"
-                    Delete_status = "Delete department  rUnsuccessful"         
+                    Delete_status = "Delete department  Unsuccessful"         
             elif re.match(r"No", str(Delete), re.IGNORECASE):
-                Delete_test_status = "Fail"
-                Delete_status = "Delete department  Unsuccessful"
+                Delete_test_status = "Pass"
+                Delete_status = "Delete Option No in Excel Sheet"
         except: 
             Delete_test_status = "Fail"
             Delete_status = "Delete department  Unsuccessful" 
@@ -173,4 +182,25 @@ class DepartmentAutomation:
         return delete
     
     
+    def departmentname(self):
+        function_name = "Department"
+        valid_rows = ExcelUtils.get_valid_rows(FILE_PATH, function_name)
+        workbook = load_workbook(FILE_PATH)
+        sheet = workbook[function_name]
+        sleep(10)
+        for row_num in range(2, valid_rows):
+            # Define columns and dynamically fetch their values
+            data = {
+                "Department":4,
+            }
+            row_data = {key: sheet.cell(row=row_num, column=col).value 
+                            for key, col in data.items()}
+            name = row_data["Department"]
+            datas = name
+            print(datas)
+            return datas
+
+
+
+
 

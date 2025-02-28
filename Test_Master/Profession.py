@@ -130,8 +130,8 @@ class ProfessionAutomation:
                     Edit_test_status = "Fail"
                     Edit_status = "Edit profession Unsuccessful"       
             elif re.match(r"No", str(Edit), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit profession Unsuccessful"   
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in Excel Sheet"   
         except:         
             Edit_test_status = "Fail"
             Edit_status = "Edit profession Unsuccessful"  
@@ -160,8 +160,8 @@ class ProfessionAutomation:
                     Delete_test_status = "Fail"
                     Delete_status = "Delete profession  Unsuccessful"         
             elif re.match(r"No", str(Delete), re.IGNORECASE):
-                Delete_test_status = "Fail"
-                Delete_status = "Delete profession  Unsuccessful" 
+                Delete_test_status = "Pass"
+                Delete_status = "Delete Option No in Excel Sheet" 
             delete = Delete_test_status,Delete_status
             return delete
         except: 
@@ -170,6 +170,22 @@ class ProfessionAutomation:
         delete = Delete_test_status,Delete_status
         return delete
     
-    
+    def Profesionname(self):
+        function_name = "Profession"
+        valid_rows = ExcelUtils.get_valid_rows(FILE_PATH, function_name)
+        workbook = load_workbook(FILE_PATH)
+        sheet = workbook[function_name]
+        sleep(10)
+        for row_num in range(2, valid_rows):
+            # Define columns and dynamically fetch their values
+            data = {
+                "Profession":4,
+            }
+            row_data = {key: sheet.cell(row=row_num, column=col).value 
+                            for key, col in data.items()}
+            name = row_data["Profession"]
+            datas = name
+            print(datas)
+            return datas
     
                

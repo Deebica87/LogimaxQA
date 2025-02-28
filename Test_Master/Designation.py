@@ -129,8 +129,8 @@ class DesignationAutomation:
                     Edit_test_status = "Fail"
                     Edit_status = "Edit designation Unsuccessful"       
             elif re.match(r"No", str(Edit), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit designation Unsuccessful"   
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in Excel Sheet"   
         except:         
             Edit_test_status = "Fail"
             Edit_status = "Edit designation Unsuccessful"  
@@ -143,7 +143,7 @@ class DesignationAutomation:
         # Check if Dept_id is empty
             if Desi_id == ' ':
                 Edit_test_status = "Fail"
-                Edit_status = "Edit department Unsuccessful"
+                Edit_status = "Edit designation Unsuccessful"
                 edit =  Edit_test_status,Edit_status
                 return edit  # Return immediately
         # Check if Edit action is "yes" (case-insensitive)
@@ -160,8 +160,8 @@ class DesignationAutomation:
                     Delete_test_status = "Fail"
                     Delete_status = "Delete designation  Unsuccessful"         
             elif re.match(r"No", str(Delete), re.IGNORECASE):
-                Delete_test_status = "Fail"
-                Delete_status = "Delete designation  Unsuccessful" 
+                Delete_test_status = "Pass"
+                Delete_status = "Delete Option No in Excel Sheet" 
             delete = Delete_test_status,Delete_status
             return delete
         except: 
@@ -170,4 +170,21 @@ class DesignationAutomation:
         delete = Delete_test_status,Delete_status
         return delete
     
+    def designationname(self):
+        function_name = "Designation"
+        valid_rows = ExcelUtils.get_valid_rows(FILE_PATH, function_name)
+        workbook = load_workbook(FILE_PATH)
+        sheet = workbook[function_name]
+        sleep(10)
+        for row_num in range(2, valid_rows):
+            # Define columns and dynamically fetch their values
+            data = {
+                "Designation":4,
+            }
+            row_data = {key: sheet.cell(row=row_num, column=col).value 
+                            for key, col in data.items()}
+            name = row_data["Designation"]
+            datas = name
+            print(datas)
+            return datas 
     

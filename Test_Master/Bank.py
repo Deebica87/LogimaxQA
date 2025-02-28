@@ -194,8 +194,8 @@ class BankAutomation:
 
             # If Edit action is "No"
             elif re.match(r"No", str(Edit), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit Bank Unsuccessful: Edit action is 'No'"
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in Excel Sheet"
 
             else:
                 Edit_test_status = "Fail"
@@ -246,8 +246,8 @@ class BankAutomation:
                     Delete_status = f"Delete Bank Unsuccessful: {str(e)}"
                     
             elif re.match(r"No", str(Delete), re.IGNORECASE):
-                Delete_test_status = "Fail"
-                Delete_status = "Delete Bank Unsuccessful: Delete action is 'No'"
+                Delete_test_status = "Pass"
+                Delete_status = "Delete Option No in Excel Sheet"
 
             else:
                 Delete_test_status = "Fail"

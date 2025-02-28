@@ -149,8 +149,8 @@ class  PaymentModeAutomation:
                     Edit_test_status = "Fail"
                     Edit_status = "Edit Payment Mode Unsuccessful"       
             elif re.match(r"No", str(Edit), re.IGNORECASE):
-                Edit_test_status = "Fail"
-                Edit_status = "Edit Payment Mode Unsuccessful"   
+                Edit_test_status = "Pass"
+                Edit_status = "Edit Option No in Excel Sheet"   
         except:         
             Edit_test_status = "Fail"
             Edit_status = "Edit Payment Mode Unsuccessful"  
@@ -183,8 +183,8 @@ class  PaymentModeAutomation:
                     Delete_test_status = "Fail"
                     Delete_status = "Delete Payment Mode  Unsuccessful"         
             elif re.match(r"No", str(Delete), re.IGNORECASE):
-                Delete_test_status = "Fail"
-                Delete_status = "Delete Payment Mode  Unsuccessful" 
+                Delete_test_status = "pass"
+                Delete_status = "Delete Option No in Excel Sheet" 
             delete = Delete_test_status,Delete_status
             return delete
         except: 

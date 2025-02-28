@@ -5,11 +5,13 @@ from Test_Master import Department,Designation,Profession,Payment_mode,Bank,Clas
 from Test_Customer import customer
 from Test_Employee import employee
 from Test_Accounts import Create_Account
+import datetime
 
 class main():
     def main():
         FILE_PATH = ExcelUtils.file_path
         # Step 1: Initialize WebDriver
+        ct1 = datetime.datetime.now()
         driver = webdriver.Chrome()  # Ensure ChromeDriver is in PATH
         driver.maximize_window()
 
@@ -63,9 +65,15 @@ class main():
                     print("Invalid option")
         finally:
             # Close the WebDriver
+            
             driver.close()
             driver.quit()
             print("Automation process completed.")
+            ct2 = datetime.datetime.now()
+            time_diff = ct2 - ct1  
+            print("ct1 =", ct1.strftime("%Y-%m-%d %H:%M:%S.%f"))  # Format output
+            print("ct2 =", ct2.strftime("%Y-%m-%d %H:%M:%S.%f"))  
+            print("Time difference =", time_diff) 
 
     if __name__ == "__main__":
         print(__name__)
