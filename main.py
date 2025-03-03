@@ -12,6 +12,7 @@ class main():
         FILE_PATH = ExcelUtils.file_path
         # Step 1: Initialize WebDriver
         ct1 = datetime.datetime.now()
+        print('Automation process Started',ct1)
         driver = webdriver.Chrome()  # Ensure ChromeDriver is in PATH
         driver.maximize_window()
 
@@ -68,8 +69,8 @@ class main():
             
             driver.close()
             driver.quit()
-            print("Automation process completed.")
             ct2 = datetime.datetime.now()
+            print('Automation process completed',ct2)
             time_diff = ct2 - ct1  
             print("ct1 =", ct1.strftime("%Y-%m-%d %H:%M:%S.%f"))  # Format output
             print("ct2 =", ct2.strftime("%Y-%m-%d %H:%M:%S.%f"))  
