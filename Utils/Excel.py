@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 
 
 class ExcelUtils:
-    file_path = "C:\Users\ADMIN\.jenkins\workspace\RetailProj\\Retail_data.xlsx"
+    file_path = "C:\\Users\\ADMIN\\.jenkins\\workspace\\RetailProj\\Retail_data.xlsx"
     # Start Excel
     excel_app = win32com.client.Dispatch("Excel.Application")
     excel_app.Visible = False
