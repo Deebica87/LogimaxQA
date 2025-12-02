@@ -5,7 +5,7 @@ from openpyxl import load_workbook
 
 
 class ExcelUtils:
-    file_path = "D:\CRM\Taneira\log.xlsx"
+    file_path = "C:\Users\ADMIN\.jenkins\workspace\PythonProj\log.xlsx"
     excel_app = win32com.client.Dispatch("Excel.Application")
     excel_app.Quit()
     # if excel_app.Workbooks.Count > 0:
